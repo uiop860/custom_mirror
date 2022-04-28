@@ -2,6 +2,7 @@ import { weatherApiResponse } from "../utils/apiTestResponse";
 
 import { Group } from "@visx/group";
 import { Line } from "@visx/shape";
+import { scaleLinear } from "@visx/scale";
 import Svg from "../styles/WeatherGraphStyle";
 
 const data = [
@@ -18,18 +19,39 @@ weatherApiResponse.hourly = weatherApiResponse.hourly.map(d => {
 
 const WeatherGraph = () => {
   
-
-
-    return (
-      <Svg width={"100%"} height={"100%"} viewBox={`0 0 ${500} ${500}`}>
-        <rect fill={"black"} width={500} height={500}/>
-        <Group top={0} left={0} >
-          <Line from={{x:0, y:0}} to={{x:500, y:500}} ></Line>
-          <Line from={{x:500, y:0}} to={{x:0, y:500}} ></Line>
-        </Group>
-      </Svg>
-    );
-
+  const width = 500;
+  const height = 500;
+  
+  const [minX, maxX] = [Math.min(...weatherApiResponse.hourly.map(d => d.dt)), Math.max(...weatherApiResponse.hourly.map(d => d.dt))]
+  const [minY, maxY] = [Math.min(...weatherApiResponse.hourly.map(d => d.temp)), Math.max(...weatherApiResponse.hourly.map(d => d.temp))]
+  
+  const xScale = scaleLinear({
+    domain: [minX, maxX],
+    range: [0, width],
+    round: true
+  });
+  
+  const yScale = scaleLinear({
+    domain: [minY, maxY],
+    range: [height, 0],
+    round: true
+  });
+  
+  return (
+    <Svg width={"100%"} height={"100%"} viewBox={`0 0 ${500} ${500}`}>
+      <Group top={0} left={0} >
+        {weatherApiResponse.hourly.map((d, i) => {
+          return (
+            <Line
+              key={i}
+              from={{ x: xScale(d.dt), y: yScale(d.temp) }}
+              to={{ x: xScale(d.dt+1), y: yScale(d.temp+1) }}
+            />
+          );
+        })}
+      </Group>
+    </Svg>
+  );
 };
 
 export default WeatherGraph;
