@@ -1,54 +1,46 @@
 import { weatherApiResponse } from "../utils/apiTestResponse";
 
 import { Group } from "@visx/group";
-import { Line } from "@visx/shape";
+import { Line , LinePath } from "@visx/shape";
 import { scaleLinear } from "@visx/scale";
 import Svg from "../styles/WeatherGraphStyle";
+import { curveBasis , curveCatmullRom } from "@visx/curve";
+import cityTemperature from '@visx/mock-data/lib/mocks/cityTemperature';
 
-const data = [
-  {name: 'Page A', uv: 400, pv: 2400, amt: 2400},
-  {name: 'Page B', uv: 600, pv: 2700, amt: 2500},
-  {name: 'Page C', uv: 700, pv: 2800, amt: 2600},
-  {name: 'Page D', uv: 800, pv: 2900, amt: 2700},
-];
-
-weatherApiResponse.hourly = weatherApiResponse.hourly.map(d => {
-  d.dt = new Date(d.dt * 1000).getHours()
-  return d;
-});
+// weatherApiResponse.hourly = weatherApiResponse.hourly.map(d => {
+//   d.dt = new Date(d.dt * 1000).getHours()
+//   return d;
+// });
 
 const WeatherGraph = () => {
   
   const width = 500;
-  const height = 500;
+  const height = 200;
+  const margin = { top: 20, right: 20, bottom: 20, left: 20 };
   
-  const [minX, maxX] = [Math.min(...weatherApiResponse.hourly.map(d => d.dt)), Math.max(...weatherApiResponse.hourly.map(d => d.dt))]
-  const [minY, maxY] = [Math.min(...weatherApiResponse.hourly.map(d => d.temp)), Math.max(...weatherApiResponse.hourly.map(d => d.temp))]
-  
-  const xScale = scaleLinear({
-    domain: [minX, maxX],
-    range: [0, width],
+  const timeScale = scaleLinear({
+    domain: [Math.min(...weatherApiResponse.hourly.map(d => d.dt)), Math.max(...weatherApiResponse.hourly.map(d => d.dt))],
+    range: [0, width - margin.left - margin.right],
     round: true
   });
   
-  const yScale = scaleLinear({
-    domain: [minY, maxY],
-    range: [height, 0],
+  const tempScale = scaleLinear({
+    domain: [Math.min(...weatherApiResponse.hourly.map(d => d.temp)), Math.max(...weatherApiResponse.hourly.map(d => d.temp))],
+    range: [height - margin.top - margin.bottom, 0],
     round: true
   });
   
   return (
-    <Svg width={"100%"} height={"100%"} viewBox={`0 0 ${500} ${500}`}>
-      <Group top={0} left={0} >
-        {weatherApiResponse.hourly.map((d, i) => {
-          return (
-            <Line
-              key={i}
-              from={{ x: xScale(d.dt), y: yScale(d.temp) }}
-              to={{ x: xScale(d.dt+1), y: yScale(d.temp+1) }}
-            />
-          );
-        })}
+    <Svg width={width} height={height} >
+      <Group top={margin.top} left={margin.left} >
+        <LinePath
+          data={weatherApiResponse.hourly}
+          x={(d) => timeScale(d.dt)}
+          y={(d) => tempScale(d.temp)}
+          strokeWidth={2}
+          stroke={"#000"}
+          curve={curveCatmullRom}
+        />
       </Group>
     </Svg>
   );
