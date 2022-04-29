@@ -5,7 +5,7 @@ import WeatherWidget, {Temp, WeatherIcon} from '../styles/WeatherWidget';
 import { weatherApiResponse } from '../utils/apiTestResponse';
 import WeatherGraph from './WeatherGraph';
 
-const Weather = () => {  
+const Weather = () => {
   const [weather,setWeather] = useState()
   const [weatherIcon,setWeatherIcon] = useState()
   
@@ -18,7 +18,7 @@ const Weather = () => {
     // });
     
     setWeather(weatherApiResponse);
-    getWeatherIcon(weatherApiResponse).then((icon)=> {
+    getWeatherIcon(weatherApiResponse.current.weather).then((icon)=> {
       setWeatherIcon(icon);
     });
   },[]);

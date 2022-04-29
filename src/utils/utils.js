@@ -11,14 +11,9 @@ const fetchWeather = async () => {
   return data;
 };
 
-// const fetchStocks = async () => {
-//   const response = await fetch("", { method: "GET" });
-//   const data = await response.json();
-// };
-
 const getWeatherIcon = async (weather) => {
-  const id = weather.current.weather[0].id;
-  const time = weather.current.weather[0].icon.slice(-1);
+  const id = weather[0].id;
+  const time = weather[0].icon.slice(-1);
   let svgPath;
   if ( time === "d") {
     svgPath = openWeatherMap.day[id];
