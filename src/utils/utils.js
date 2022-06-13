@@ -15,7 +15,7 @@ const getWeatherIcon = async (weather) => {
   const id = weather[0].id;
   const time = weather[0].icon.slice(-1);
   let svgPath;
-  if ( time === "d") {
+  if (time === "d") {
     svgPath = openWeatherMap.day[id];
   } else if (time === "n") {
     svgPath = openWeatherMap.night[id];

@@ -1,45 +1,43 @@
-import { weatherApi29_05 } from "../utils/apiTestResponse";
-import Svg from "../styles/WeatherGraphStyle";
-import utils from "../utils/utils";
-
-// visx
-import { Group } from "@visx/group";
-import { LinePath } from "@visx/shape";
-import { scaleLinear } from "@visx/scale";
-import { curveCatmullRom } from "@visx/curve";
-import { AxisBottom, AxisLeft } from "@visx/axis";
-import { HtmlLabel } from "@visx/annotation";
+import Svg from "../styles/Svg";
 import { getWeatherIcon } from "../utils/utils";
 import { useEffect, useState } from "react";
 import DynText from "../styles/DynText";
 
-const WeatherGraph = () => {
-  const api = weatherApi29_05;
+// visx
+import { curveCatmullRom } from "@visx/curve";
+import { HtmlLabel } from "@visx/annotation";
+import { scaleLinear } from "@visx/scale";
+import { LinePath } from "@visx/shape";
+import { Group } from "@visx/group";
 
-  const [weatherIcon, setWeatherIcon] = useState([]);
+const WeatherGraph = ({ weather }) => {
+  const [weatherIcon, setWeatherIcon] = useState({});
 
   // get every thrid element in array
-  let data = api.hourly.filter((d, i) => i % 3 === 2);
+  let data = weather.hourly.filter((_, i) => i % 3 === 2);
   data.forEach((d) => (d.hours = new Date(d.dt * 1000).getHours()));
 
   useEffect(() => {
-    api.hourly.forEach((d, i) => {
+    data.forEach((d, i) => {
       getWeatherIcon(d.weather).then((icon) => {
-        setWeatherIcon((weatherIcon) => [...weatherIcon, icon]);
+        setWeatherIcon((prevState) => ({
+          ...prevState,
+          [i]: icon,
+        }));
       });
     });
   }, []);
 
-  const margin = { top: 40, right: 20, bottom: 50, left: 50 };
-  const width = 700;
+  const margin = { top: 40, right: 20, bottom: 50, left: 20 };
+  const width = 600;
   const height = 200;
   const xMax = width - margin.left - margin.right;
   const yMax = height - margin.top - margin.bottom;
 
   const timeScale = scaleLinear({
     domain: [
-      Math.min(...api.hourly.map((d) => d.dt)),
-      Math.max(...api.hourly.map((d) => d.dt)),
+      Math.min(...weather.hourly.map((d) => d.dt)),
+      Math.max(...weather.hourly.map((d) => d.dt)),
     ],
     range: [0, xMax],
     round: true,
@@ -47,9 +45,9 @@ const WeatherGraph = () => {
 
   const tempScale = scaleLinear({
     domain: [
-      // Math.min(...api.hourly.map((d) => d.temp)),
+      // Math.min(...weather.hourly.map((d) => d.temp)),
       0,
-      Math.max(...api.hourly.map((d) => d.temp)),
+      Math.max(...weather.hourly.map((d) => d.temp)),
     ],
     range: [yMax, 0],
     round: true,
@@ -58,18 +56,8 @@ const WeatherGraph = () => {
   return (
     <Svg width={width} height={height}>
       <Group top={margin.top} left={margin.left}>
-        {/* <Group top={0} left={0}> */}
-        {/* <AxisLeft scale={tempScale} left={-10} /> */}
-        {/* <AxisBottom
-          tickFormat={(d) =>
-            ("0" + String(new Date(d * 1000).getHours())).slice(-2) + ":00"
-          }
-          top={yMax + 10}
-          scale={timeScale}
-          numTicks={12}
-        /> */}
         <LinePath
-          data={api.hourly}
+          data={weather.hourly}
           x={(d) => timeScale(d.dt)}
           y={(d) => tempScale(d.temp)}
           strokeWidth={2}
@@ -86,7 +74,7 @@ const WeatherGraph = () => {
               y={tempScale(d.temp) - 15}
               containerStyle={{ display: "flex", justifyContent: "center" }}
             >
-              <DynText fontSize="15px">{Math.round(d.temp)}</DynText>
+              <DynText fontSize="15px">{Math.round(d.temp) + "°"}</DynText>
             </HtmlLabel>
             <HtmlLabel
               key={Math.random()}
@@ -100,8 +88,8 @@ const WeatherGraph = () => {
                 alignItems: "center",
               }}
             >
-              <img style={{ height: "50px" }} alt="" src={weatherIcon[i]}></img>
-              <DynText fontSize="13px">
+              <img style={{ height: "45px" }} alt="" src={weatherIcon[i]}></img>
+              <DynText fontSize="11px">
                 {("0" + String(new Date(d.dt * 1000).getHours())).slice(-2) +
                   ":00"}
               </DynText>
