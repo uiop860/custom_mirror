@@ -29,7 +29,6 @@ function App() {
     <FlexBox>
       <FlexItem>
         <Weather updateTimer={updateTimer} />
-        <p>{String(updateTimer)}</p>
       </FlexItem>
     </FlexBox>
   );
