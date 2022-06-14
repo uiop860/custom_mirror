@@ -28,8 +28,8 @@ const WeatherGraph = ({ weather }) => {
     });
   }, []);
 
-  const margin = { top: 40, right: 20, bottom: 50, left: 20 };
-  const width = 600;
+  const margin = { top: 40, right: 20, bottom: 60, left: 20 };
+  const width = 900;
   const height = 200;
   const xMax = width - margin.left - margin.right;
   const yMax = height - margin.top - margin.bottom;
@@ -74,7 +74,7 @@ const WeatherGraph = ({ weather }) => {
               y={tempScale(d.temp) - 15}
               containerStyle={{ display: "flex", justifyContent: "center" }}
             >
-              <DynText fontSize="15px">{Math.round(d.temp) + "°"}</DynText>
+              <DynText fontSize="20px">{Math.round(d.temp) + "°"}</DynText>
             </HtmlLabel>
             <HtmlLabel
               key={Math.random()}
@@ -88,8 +88,8 @@ const WeatherGraph = ({ weather }) => {
                 alignItems: "center",
               }}
             >
-              <img style={{ height: "45px" }} alt="" src={weatherIcon[i]}></img>
-              <DynText fontSize="11px">
+              <img style={{ height: "60px" }} alt="" src={weatherIcon[i]}></img>
+              <DynText fontSize="15px">
                 {("0" + String(new Date(d.dt * 1000).getHours())).slice(-2) +
                   ":00"}
               </DynText>

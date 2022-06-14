@@ -3,7 +3,7 @@ import styled from "styled-components";
 const WeatherWidget = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 300px);
-  grid-template-rows: repeat(2, 300px);
+  grid-template-rows: repeat(2, 200px);
   align-items: center;
   justify-items: center;
 `;

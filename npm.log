@@ -1,0 +1,33 @@
+
+> mirror@0.1.0 go
+> node ./run-script/bin/react-scripts.js start
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view mirror in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://172.20.10.3:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+assets by path static/ 2.61 MiB
+  assets by path static/js/*.js 1.96 MiB
+    asset static/js/bundle.js 1.85 MiB [emitted] (name: main) 1 related asset
+    asset static/js/src_svg_thunderstorms-night-overcast-rain_svg.chunk.js 588 bytes [emitted]
+    asset static/js/src_svg_thunderstorms-night-overcast-snow_svg.chunk.js 588 bytes [emitted]
+    asset static/js/src_svg_thunderstorms-night-extreme-rain_svg.chunk.js 582 bytes [emitted]
+    + 233 assets
+  assets by path static/media/*.svg 672 KiB
+    asset static/media/extreme-day-sleet.5ace98872d9b3ed0d2a1.svg 7.83 KiB [emitted] [immutable] [from: src/svg/extreme-day-sleet.svg]
+    asset static/media/overcast-day-sleet.defd93804d15ff33b41d.svg 7.83 KiB [emitted] [immutable] [from: src/svg/overcast-day-sleet.svg]
+    asset static/media/extreme-night-sleet.7d1b5270bbf3d351d5e5.svg 7.65 KiB [emitted] [immutable] [from: src/svg/extreme-night-sleet.svg]
+    asset static/media/overcast-night-sleet.d4dad381d4e0711117fe.svg 7.63 KiB [emitted] [immutable] [from: src/svg/overcast-night-sleet.svg]
+    + 232 assets
+asset asset-manifest.json 47.2 KiB [emitted]
+asset index.html 1.2 KiB [emitted]
+cached modules 1.92 MiB (javascript) 672 KiB (asset) 32.4 KiB (runtime) [cached] 753 modules
+webpack 5.70.0 compiled successfully in 7100 ms
